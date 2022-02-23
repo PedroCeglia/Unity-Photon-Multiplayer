@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class Menu : MonoBehaviourPunCallbacks
 {
@@ -16,14 +17,14 @@ public class Menu : MonoBehaviourPunCallbacks
         _menuLobby.gameObject.SetActive(false);
     }
 
-    // CallBack call when the user Connect with the server
+    // CallBack is called when the user Connect with the server
     public override void OnConnectedToMaster()
     {
         // When the user connect with the Server, the _menuEntrada will appear
         _menuEntrada.gameObject.SetActive(true);
     }
 
-    // Callback call when the user Join in a Room
+    // Callback is called when the user Join in a Room
     public override void OnJoinedRoom()
     {
         SetMenuActive(_menuLobby.gameObject);
@@ -41,4 +42,23 @@ public class Menu : MonoBehaviourPunCallbacks
         _menu.gameObject.SetActive(true);
     }
 
+    // Callback is called When a User Get Out The Room
+    // It is called to all users
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        _menuLobby.SetPlayerListName();
+    }
+
+    // Leave the Room
+    public void LeaveTheRoom()
+    {
+        GestorDeRede.Instance.LeaveTheRoom();
+        SetMenuActive(_menuEntrada.gameObject);
+    }
+
+    // Start The Game
+    public void StartTheGame(string scene)
+    {
+        GestorDeRede.Instance.photonView.RPC("StartTheGame", RpcTarget.All, scene);
+    }
 }
