@@ -53,11 +53,11 @@ public class GestorDeRede : MonoBehaviourPunCallbacks
         string lista = "";
         foreach(var player in PhotonNetwork.PlayerList) 
         {
-            lista += player.NickName + "/n";
+            lista += player.NickName + "\n";
         }
         return lista;
     }
-    
+     
     // Verify if You are Owner Room
     public bool VerifyOwnerRoom()
     {
@@ -68,6 +68,13 @@ public class GestorDeRede : MonoBehaviourPunCallbacks
     public void LeaveTheRoom()
     {
         PhotonNetwork.LeaveRoom();
+    }
+
+    // Start The Game To All Users
+    [PunRPC]
+    public void StartTheGame(string scene)
+    {
+        PhotonNetwork.LoadLevel(scene);
     }
 
     // Return when Connect
